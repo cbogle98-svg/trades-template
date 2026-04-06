@@ -1,0 +1,60 @@
+{
+  "business": {
+    "name": "Sample Trades Co.",
+    "tagline": "Quality work, fair prices, family-owned",
+    "industry": "General Contractor",
+    "yearFounded": 2010,
+    "phone": "(254) 555-0100",
+    "email": "info@sampletrades.example",
+    "address": {
+      "street": "123 Main St",
+      "city": "Stephenville",
+      "state": "TX",
+      "zip": "76401"
+    },
+    "serviceArea": ["Erath County", "Comanche County", "Hood County"],
+    "hours": {
+      "weekdays": "8:00 AM – 5:00 PM",
+      "saturday": "By appointment",
+      "sunday": "Closed"
+    },
+    "social": {
+      "facebook": "",
+      "google": ""
+    }
+  },
+  "brand": {
+    "primary": "#2D4A3E",
+    "primaryDark": "#1B3028",
+    "accent": "#C4A46C",
+    "background": "#FAF8F5",
+    "text": "#3D3D3D",
+    "fontHeading": "Playfair Display",
+    "fontBody": "Inter"
+  },
+  "services": [
+    {
+      "icon": "🔨",
+      "title": "General Construction",
+      "description": "Custom builds, renovations, and remodels for homes and businesses across Erath County."
+    },
+    {
+      "icon": "🏠",
+      "title": "Custom Homes",
+      "description": "Ground-up custom homes designed around your land, your budget, and your lifestyle."
+    },
+    {
+      "icon": "🛠",
+      "title": "Renovations",
+      "description": "Kitchen remodels, additions, porch builds, and whole-home renovations."
+    }
+  ],
+  "about": {
+    "headline": "Built on a Handshake",
+    "body": "We've been building in Erath County for over a decade. Local roots, local crew, local accountability."
+  },
+  "cta": {
+    "headline": "Ready to Get Started?",
+    "subtext": "Free consultations on every project. Just give us a call."
+  }
+}
