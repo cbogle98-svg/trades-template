@@ -23,8 +23,24 @@ npm run build  # production build → ./dist
 1. On GitHub, click "Use this template" → create a new repo for the client
 2. Clone the new repo locally
 3. Edit `src/data/client.json` with the new client's info
-4. `npm install && npm run dev` to preview
-5. Connect the repo to Cloudflare Pages → automatic deploys on every push
+4. **Set up the contact form** (see checklist below)
+5. `npm install && npm run dev` to preview
+6. Connect the repo to Cloudflare Pages → automatic deploys on every push
+
+## Contact form setup checklist (required before launch)
+
+The contact form uses [Web3Forms](https://web3forms.com) — free, unlimited submissions, no account dashboard required. You need a unique access key for each client site.
+
+1. Go to **https://web3forms.com**
+2. Click **"Create your Access Key"**
+3. Enter the email address where the client wants form submissions delivered
+4. Solve the captcha
+5. **The client will receive a verification email** — have them click the verify link to activate the key
+6. You'll receive the access key (a UUID like `1a2b3c4d-5e6f-...`)
+7. Open `src/data/client.json` and replace `REPLACE_WITH_REAL_WEB3FORMS_KEY` under `contact.accessKey` with the real key
+8. Submit a test form on the deployed site to confirm it lands in the client's inbox
+
+⚠️ **If you skip this step**, the form will render but submissions will fail with a Web3Forms error message to the visitor. Always do this before sharing the live site with the client.
 
 ## Structure
 

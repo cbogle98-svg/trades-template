@@ -129,6 +129,13 @@
   "cta": {
     "eyebrow": "Let's Talk",
     "headline": "Ready to Get Started?",
-    "subtext": "Free consultations on every project. Just give us a call — we'll come out, listen to what you have in mind, and give you a straight answer."
+    "subtext": "Free consultations on every project. Call us or send a message — we'll come out, listen to what you have in mind, and give you a straight answer."
+  },
+  "contact": {
+    "formProvider": "web3forms",
+    "accessKey": "REPLACE_WITH_REAL_WEB3FORMS_KEY",
+    "subjectPrefix": "New website inquiry",
+    "successMessage": "Thanks! We'll get back to you within 24 hours.",
+    "errorMessage": "Sorry, something went wrong. Please call us instead."
   }
 }
