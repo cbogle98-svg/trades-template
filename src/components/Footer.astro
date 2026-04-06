@@ -1,0 +1,15 @@
+---
+import client from '../data/client.json';
+const year = new Date().getFullYear();
+---
+
+<footer class="py-10" style="background:#1A1A1A">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+    <div class="text-2xl font-bold text-white mb-2" style="font-family:var(--font-heading)">
+      {client.business.name}
+    </div>
+    <p class="text-xs text-white/30">
+      © {year} {client.business.name} — {client.business.address.city}, {client.business.address.state} — {client.business.licenses}
+    </p>
+  </div>
+</footer>

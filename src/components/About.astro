@@ -1,0 +1,46 @@
+---
+import client from '../data/client.json';
+---
+
+<section id="about" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="text-xs uppercase tracking-[0.3em] font-semibold mb-3" style="color:var(--brand-primary-light)">
+          {client.about.eyebrow}
+        </div>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight" style="color:#1A1A1A">
+          {client.about.headline}
+        </h2>
+        <p class="text-lg leading-relaxed mb-10" style="color:var(--brand-text-light)">
+          {client.about.body}
+        </p>
+        <div class="grid grid-cols-3 gap-6">
+          {client.about.stats.map(stat => (
+            <div>
+              <div class="text-4xl md:text-5xl font-bold leading-none mb-2"
+                style="color:var(--brand-primary);font-family:var(--font-heading)">
+                {stat.number}
+              </div>
+              <div class="text-xs uppercase tracking-widest font-semibold" style="color:var(--brand-text-light)">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="aspect-square rounded-2xl flex items-center justify-center border border-black/5 relative overflow-hidden"
+        style="background:var(--brand-surface)">
+        <div class="text-center p-12">
+          <div class="text-8xl mb-6">👷</div>
+          <h3 class="text-2xl font-bold mb-2" style="color:#1A1A1A;font-family:var(--font-heading)">
+            {client.business.shortName}
+          </h3>
+          <p class="text-sm" style="color:var(--brand-text-light)">
+            Add a team or shop photo here
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

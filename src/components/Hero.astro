@@ -1,0 +1,76 @@
+---
+import client from '../data/client.json';
+const phoneDigits = client.business.phone.replace(/\D/g, '');
+---
+
+<section class="relative overflow-hidden py-24 md:py-32">
+  <div class="absolute -top-48 -right-48 w-[600px] h-[600px] rounded-full opacity-10 pointer-events-none"
+    style="background:radial-gradient(circle, var(--brand-primary-light), transparent 70%)"></div>
+  <div class="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full opacity-10 pointer-events-none"
+    style="background:radial-gradient(circle, var(--brand-accent), transparent 70%)"></div>
+
+  <div class="max-w-6xl mx-auto px-6 relative">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-px" style="background:var(--brand-primary-light)"></div>
+          <span class="text-xs uppercase tracking-[0.3em] font-semibold" style="color:var(--brand-primary-light)">
+            {client.hero.eyebrow}
+          </span>
+        </div>
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-6" style="color:#1A1A1A">
+          {client.hero.headline}{' '}
+          <span class="italic" style="color:var(--brand-primary)">{client.hero.headlineEmphasis}</span>
+        </h1>
+        <p class="text-lg leading-relaxed mb-10 max-w-md" style="color:var(--brand-text-light)">
+          {client.hero.description}
+        </p>
+        <div class="flex flex-wrap items-center gap-4">
+          <a
+            href="#contact"
+            class="inline-flex items-center gap-2 px-9 py-4 rounded-md text-white font-semibold transition hover:-translate-y-0.5 hover:shadow-xl"
+            style="background:var(--brand-primary)"
+          >
+            {client.hero.primaryCtaText} →
+          </a>
+          <a
+            href="#gallery"
+            class="inline-flex items-center gap-2 font-semibold transition hover:gap-3"
+            style="color:var(--brand-primary)"
+          >
+            {client.hero.secondaryCtaText} →
+          </a>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="aspect-[4/3] rounded-2xl flex items-center justify-center relative border border-black/5"
+          style="background:var(--brand-surface)">
+          <div class="text-center p-10">
+            <div class="text-7xl mb-4">🏗️</div>
+            <h3 class="text-2xl font-bold mb-2" style="color:#1A1A1A;font-family:var(--font-heading)">
+              Featured Project
+            </h3>
+            <p class="text-sm" style="color:var(--brand-text-light)">
+              Add a project photo here
+            </p>
+          </div>
+          <div class="absolute bottom-6 left-6 bg-white rounded-xl px-5 py-4 shadow-xl flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white text-lg"
+              style="background:var(--brand-primary)">⭐</div>
+            <div>
+              <div class="text-xs" style="color:var(--brand-text-light)">Customer Rating</div>
+              <strong class="text-base block" style="color:#1A1A1A">5.0 Stars</strong>
+            </div>
+          </div>
+        </div>
+        <div class="absolute -top-3 -right-3 md:top-5 md:-right-5 rounded-xl px-5 py-4 shadow-xl"
+          style="background:var(--brand-primary-dark);color:white">
+          <div class="text-3xl font-bold leading-none" style="font-family:var(--font-heading)">
+            {client.business.yearFounded ? new Date().getFullYear() - client.business.yearFounded + '+' : '15+'}
+          </div>
+          <div class="text-[10px] tracking-[0.2em] uppercase mt-1 opacity-70">Years Local</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

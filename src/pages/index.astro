@@ -1,34 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import client from '../data/client.json';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import About from '../components/About.astro';
+import Gallery from '../components/Gallery.astro';
+import Testimonials from '../components/Testimonials.astro';
+import ServiceArea from '../components/ServiceArea.astro';
+import CTA from '../components/CTA.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <Layout>
-  <main class="min-h-screen flex items-center justify-center px-6">
-    <div class="max-w-2xl text-center">
-      <p class="text-sm uppercase tracking-widest text-stone-500 mb-4">
-        Trades Template — Astro + Tailwind
-      </p>
-      <h1 class="text-5xl md:text-6xl font-bold text-stone-900 mb-6 leading-tight">
-        {client.business.name}
-      </h1>
-      <p class="text-lg text-stone-600 mb-8">
-        {client.business.tagline}
-      </p>
-      <div class="inline-flex flex-col sm:flex-row gap-4 items-center">
-        <a
-          href={`tel:${client.business.phone.replace(/\D/g, '')}`}
-          class="bg-stone-900 hover:bg-stone-700 text-white px-8 py-4 rounded-lg font-semibold transition"
-        >
-          📞 {client.business.phone}
-        </a>
-        <span class="text-sm text-stone-500">
-          Serving {client.business.serviceArea[0]}
-        </span>
-      </div>
-      <p class="mt-12 text-xs text-stone-400">
-        This is a placeholder homepage. Real components will be built next.
-      </p>
-    </div>
-  </main>
+  <Header />
+  <Hero />
+  <Services />
+  <About />
+  <Gallery />
+  <Testimonials />
+  <ServiceArea />
+  <CTA />
+  <Footer />
 </Layout>

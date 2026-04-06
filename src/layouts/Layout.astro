@@ -10,6 +10,9 @@ interface Props {
 const { title, description } = Astro.props;
 const pageTitle = title ?? `${client.business.name} — ${client.business.tagline}`;
 const pageDesc = description ?? `${client.business.industry} serving ${client.business.address.city}, ${client.business.address.state}.`;
+
+const fontHeadingUrl = client.brand.fontHeading.replace(/ /g, '+');
+const fontBodyUrl = client.brand.fontBody.replace(/ /g, '+');
 ---
 
 <!doctype html>
@@ -21,9 +24,47 @@ const pageDesc = description ?? `${client.business.industry} serving ${client.bu
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDesc} />
-    <link href={`https://fonts.googleapis.com/css2?family=${client.brand.fontHeading.replace(/ /g, '+')}:wght@600;700;800&family=${client.brand.fontBody.replace(/ /g, '+')}:wght@300;400;500;600;700&display=swap`} rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href={`https://fonts.googleapis.com/css2?family=${fontHeadingUrl}:wght@600;700;800&family=${fontBodyUrl}:wght@300;400;500;600;700&display=swap`}
+      rel="stylesheet"
+    />
+    <style is:global define:vars={{
+      brandPrimary: client.brand.primary,
+      brandPrimaryDark: client.brand.primaryDark,
+      brandPrimaryLight: client.brand.primaryLight,
+      brandAccent: client.brand.accent,
+      brandBg: client.brand.background,
+      brandSurface: client.brand.surface,
+      brandText: client.brand.text,
+      brandTextLight: client.brand.textLight,
+      fontHeading: `'${client.brand.fontHeading}', serif`,
+      fontBody: `'${client.brand.fontBody}', sans-serif`
+    }}>
+      :root {
+        --brand-primary: var(--brandPrimary);
+        --brand-primary-dark: var(--brandPrimaryDark);
+        --brand-primary-light: var(--brandPrimaryLight);
+        --brand-accent: var(--brandAccent);
+        --brand-bg: var(--brandBg);
+        --brand-surface: var(--brandSurface);
+        --brand-text: var(--brandText);
+        --brand-text-light: var(--brandTextLight);
+        --font-heading: var(--fontHeading);
+        --font-body: var(--fontBody);
+      }
+      body {
+        background: var(--brand-bg);
+        color: var(--brand-text);
+        font-family: var(--font-body);
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-heading);
+      }
+    </style>
   </head>
-  <body class="bg-stone-50 text-stone-800 antialiased">
+  <body class="antialiased">
     <slot />
   </body>
 </html>

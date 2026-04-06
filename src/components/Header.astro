@@ -1,0 +1,30 @@
+---
+import client from '../data/client.json';
+const phoneDigits = client.business.phone.replace(/\D/g, '');
+---
+
+<header class="sticky top-0 z-50 bg-[var(--brand-bg)]/95 backdrop-blur-md border-b border-black/5">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="block">
+      <span class="block text-2xl font-bold leading-none" style="font-family:var(--font-heading);color:var(--brand-primary-dark)">
+        {client.business.name}
+      </span>
+      <span class="block text-[10px] tracking-[0.2em] uppercase mt-1" style="color:var(--brand-text-light)">
+        {client.business.industry}
+      </span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium" style="color:var(--brand-text)">
+      <a href="#services" class="hover:opacity-70 transition">Services</a>
+      <a href="#about" class="hover:opacity-70 transition">About</a>
+      <a href="#gallery" class="hover:opacity-70 transition">Our Work</a>
+      <a href="#contact" class="hover:opacity-70 transition">Contact</a>
+    </nav>
+    <a
+      href={`tel:${phoneDigits}`}
+      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-white font-semibold text-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+      style="background:var(--brand-primary)"
+    >
+      📞 <span class="hidden sm:inline">{client.business.phone}</span><span class="sm:hidden">Call</span>
+    </a>
+  </div>
+</header>

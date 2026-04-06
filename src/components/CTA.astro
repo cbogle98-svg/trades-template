@@ -1,0 +1,29 @@
+---
+import client from '../data/client.json';
+const phoneDigits = client.business.phone.replace(/\D/g, '');
+---
+
+<section id="contact" class="py-24" style="background:var(--brand-primary-dark)">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <div class="text-xs uppercase tracking-[0.3em] font-semibold mb-3" style="color:var(--brand-primary-light)">
+      {client.cta.eyebrow}
+    </div>
+    <h2 class="text-4xl md:text-6xl font-bold mb-6 text-white">
+      {client.cta.headline}
+    </h2>
+    <p class="text-lg leading-relaxed text-white/60 mb-12 max-w-2xl mx-auto">
+      {client.cta.subtext}
+    </p>
+    <a
+      href={`tel:${phoneDigits}`}
+      class="inline-block text-5xl md:text-6xl font-bold mb-8 transition hover:opacity-80"
+      style="color:var(--brand-accent);font-family:var(--font-heading)"
+    >
+      {client.business.phone}
+    </a>
+    <div class="text-sm text-white/50 leading-relaxed">
+      📍 {client.business.address.street}, {client.business.address.city}, {client.business.address.state} {client.business.address.zip}<br />
+      🕒 {client.business.hours.weekdays} &nbsp;|&nbsp; Saturday: {client.business.hours.saturday}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,35 @@
+---
+import client from '../data/client.json';
+---
+
+<section id="services" class="py-24" style="background:var(--brand-surface)">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="text-xs uppercase tracking-[0.3em] font-semibold mb-3" style="color:var(--brand-primary-light)">
+        {client.services.eyebrow}
+      </div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color:#1A1A1A">
+        {client.services.headline}
+      </h2>
+      <p class="text-base leading-relaxed" style="color:var(--brand-text-light)">
+        {client.services.subhead}
+      </p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {client.services.items.map(service => (
+        <div class="bg-white border border-black/5 rounded-2xl p-10 transition hover:-translate-y-1.5 hover:shadow-2xl group">
+          <div class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-5"
+            style="background:color-mix(in srgb, var(--brand-primary) 8%, transparent)">
+            {service.icon}
+          </div>
+          <h3 class="text-xl font-bold mb-2.5" style="color:#1A1A1A;font-family:var(--font-heading)">
+            {service.title}
+          </h3>
+          <p class="text-sm leading-relaxed" style="color:var(--brand-text-light)">
+            {service.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

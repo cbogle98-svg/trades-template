@@ -1,6 +1,7 @@
 {
   "business": {
     "name": "Sample Trades Co.",
+    "shortName": "Sample Trades",
     "tagline": "Quality work, fair prices, family-owned",
     "industry": "General Contractor",
     "yearFounded": 2010,
@@ -12,7 +13,7 @@
       "state": "TX",
       "zip": "76401"
     },
-    "serviceArea": ["Erath County", "Comanche County", "Hood County"],
+    "serviceArea": ["Erath County", "Comanche County", "Hood County", "Eastland County", "Palo Pinto County", "Somervell County"],
     "hours": {
       "weekdays": "8:00 AM – 5:00 PM",
       "saturday": "By appointment",
@@ -21,40 +22,113 @@
     "social": {
       "facebook": "",
       "google": ""
-    }
+    },
+    "licenses": "Licensed & Insured"
   },
   "brand": {
     "primary": "#2D4A3E",
     "primaryDark": "#1B3028",
+    "primaryLight": "#7A9E8E",
     "accent": "#C4A46C",
     "background": "#FAF8F5",
+    "surface": "#F2EDE6",
     "text": "#3D3D3D",
+    "textLight": "#7A7A7A",
     "fontHeading": "Playfair Display",
     "fontBody": "Inter"
   },
-  "services": [
-    {
-      "icon": "🔨",
-      "title": "General Construction",
-      "description": "Custom builds, renovations, and remodels for homes and businesses across Erath County."
-    },
-    {
-      "icon": "🏠",
-      "title": "Custom Homes",
-      "description": "Ground-up custom homes designed around your land, your budget, and your lifestyle."
-    },
-    {
-      "icon": "🛠",
-      "title": "Renovations",
-      "description": "Kitchen remodels, additions, porch builds, and whole-home renovations."
-    }
-  ],
+  "hero": {
+    "eyebrow": "Stephenville's Trusted Builder",
+    "headline": "Built Right.",
+    "headlineEmphasis": "Built to Last.",
+    "description": "Custom homes, renovations, and commercial construction for Erath County and beyond. From your first sketch to your final walkthrough — we build it like it's our own.",
+    "primaryCtaText": "Free Consultation",
+    "secondaryCtaText": "See Our Work"
+  },
+  "services": {
+    "eyebrow": "What We Do",
+    "headline": "Full-Service Construction",
+    "subhead": "From raw land to finished home — we handle every phase with transparency and craftsmanship.",
+    "items": [
+      {
+        "icon": "🏠",
+        "title": "Custom Homes",
+        "description": "Ground-up custom builds designed around your land, your budget, and your lifestyle."
+      },
+      {
+        "icon": "🏗️",
+        "title": "Barndominiums",
+        "description": "The Texas dream build. Metal exterior, custom interior, endless possibilities."
+      },
+      {
+        "icon": "🔨",
+        "title": "Renovations",
+        "description": "Kitchen remodels, additions, porch builds, and whole-home renovations."
+      },
+      {
+        "icon": "🏢",
+        "title": "Commercial",
+        "description": "Retail buildouts, office spaces, and agricultural buildings for growing businesses."
+      },
+      {
+        "icon": "🌳",
+        "title": "Outdoor Living",
+        "description": "Covered patios, outdoor kitchens, fire pits, and pergolas for the Texas lifestyle."
+      },
+      {
+        "icon": "📐",
+        "title": "Design & Planning",
+        "description": "We work with architects and designers — or bring your own plans. Either way."
+      }
+    ]
+  },
   "about": {
-    "headline": "Built on a Handshake",
-    "body": "We've been building in Erath County for over a decade. Local roots, local crew, local accountability."
+    "eyebrow": "Our Story",
+    "headline": "Local. Honest. Yours.",
+    "body": "We've been building in Erath County since 2010. Local roots, local crew, local accountability. When we shake your hand on a project, we're shaking on it with our reputation in this community.",
+    "stats": [
+      { "number": "15+", "label": "Years Building" },
+      { "number": "200+", "label": "Projects Done" },
+      { "number": "5★", "label": "Average Rating" }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "Recent Projects",
+    "headline": "Built Across Erath County",
+    "subhead": "A selection of recent work in and around Stephenville.",
+    "items": [
+      { "title": "Hill Country Modern", "subtitle": "3,200 sq ft custom home", "tag": "Custom Home", "icon": "🏡" },
+      { "title": "Barndominium — CR 281", "subtitle": "2,800 sq ft living + shop", "tag": "Barndominium", "icon": "🏗️" },
+      { "title": "Commercial Buildout", "subtitle": "Retail space on S. Graham St", "tag": "Commercial", "icon": "🏢" },
+      { "title": "Kitchen Remodel", "subtitle": "Full gut, modern finish", "tag": "Renovation", "icon": "🔨" },
+      { "title": "Outdoor Living", "subtitle": "Covered patio + outdoor kitchen", "tag": "Outdoor", "icon": "🌳" },
+      { "title": "Ranch Headquarters", "subtitle": "5,000 sq ft on 80 acres", "tag": "Custom Home", "icon": "🏡" }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "What Clients Say",
+    "headline": "Trusted Across the County",
+    "items": [
+      {
+        "quote": "From the first meeting to the day we moved in, they made us feel like we were their only client. The craftsmanship is incredible.",
+        "author": "The Martinez Family",
+        "location": "Stephenville, TX"
+      },
+      {
+        "quote": "Honest, on time, and on budget. They told me what to expect and that's exactly what happened. Can't ask for more than that.",
+        "author": "James R.",
+        "location": "Dublin, TX"
+      },
+      {
+        "quote": "We've used them twice now — once for a build and once for a remodel. Same quality both times. They have a customer for life.",
+        "author": "Linda & Tom M.",
+        "location": "Bluff Dale, TX"
+      }
+    ]
   },
   "cta": {
+    "eyebrow": "Let's Talk",
     "headline": "Ready to Get Started?",
-    "subtext": "Free consultations on every project. Just give us a call."
+    "subtext": "Free consultations on every project. Just give us a call — we'll come out, listen to what you have in mind, and give you a straight answer."
   }
 }

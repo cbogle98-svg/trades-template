@@ -1,0 +1,42 @@
+---
+import client from '../data/client.json';
+---
+
+<section id="gallery" class="py-24" style="background:var(--brand-primary-dark)">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="text-xs uppercase tracking-[0.3em] font-semibold mb-3" style="color:var(--brand-primary-light)">
+        {client.gallery.eyebrow}
+      </div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
+        {client.gallery.headline}
+      </h2>
+      <p class="text-base leading-relaxed text-white/50">
+        {client.gallery.subhead}
+      </p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {client.gallery.items.map(item => (
+        <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition hover:-translate-y-1 hover:border-white/30 cursor-pointer">
+          <div class="aspect-[16/10] flex items-center justify-center text-6xl"
+            style="background:linear-gradient(135deg, color-mix(in srgb, var(--brand-primary) 30%, transparent), color-mix(in srgb, var(--brand-primary-dark) 60%, transparent))">
+            {item.icon}
+          </div>
+          <div class="p-6">
+            <h4 class="text-lg font-bold mb-1 text-white" style="font-family:var(--font-heading)">
+              {item.title}
+            </h4>
+            <p class="text-xs text-white/50 mb-3">{item.subtitle}</p>
+            <span class="inline-block text-[10px] uppercase tracking-widest font-semibold py-1 px-3 rounded-full border"
+              style="color:var(--brand-primary-light);border-color:color-mix(in srgb, var(--brand-primary-light) 30%, transparent)">
+              {item.tag}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+    <p class="text-center mt-12 text-sm italic" style="color:var(--brand-primary-light)">
+      📸 Real project photos go here once we have them
+    </p>
+  </div>
+</section>
