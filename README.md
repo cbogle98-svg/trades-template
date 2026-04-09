@@ -27,20 +27,55 @@ npm run build  # production build → ./dist
 5. `npm install && npm run dev` to preview
 6. Connect the repo to Cloudflare Pages → automatic deploys on every push
 
-## Contact form setup checklist (required before launch)
+## Contact form setup
 
-The contact form uses [Web3Forms](https://web3forms.com) — free, unlimited submissions, no account dashboard required. You need a unique access key for each client site.
+The form is handled by a **Cloudflare Pages Function** at `functions/api/contact.ts`. It verifies a Cloudflare Turnstile captcha token, runs basic spam checks (honeypot field), and sends the submission as an email via [Resend](https://resend.com).
 
-1. Go to **https://web3forms.com**
-2. Click **"Create your Access Key"**
-3. Enter the email address where the client wants form submissions delivered
-4. Solve the captcha
-5. **The client will receive a verification email** — have them click the verify link to activate the key
-6. You'll receive the access key (a UUID like `1a2b3c4d-5e6f-...`)
-7. Open `src/data/client.json` and replace `REPLACE_WITH_REAL_WEB3FORMS_KEY` under `contact.accessKey` with the real key
-8. Submit a test form on the deployed site to confirm it lands in the client's inbox
+This replaces the old per-client form services (Web3Forms, Formspree, etc.) which all cap out at ~20 recipients on their paid tiers. With this setup, **every client is fully self-contained** and there's no per-account ceiling on the Bosque Works side.
 
-⚠️ **If you skip this step**, the form will render but submissions will fail with a Web3Forms error message to the visitor. Always do this before sharing the live site with the client.
+### Per-client setup
+
+For a normal new client, the `bootstrap-client.sh` script in the `bosqueworks-templates` repo handles all of this automatically. You just need to:
+
+1. Edit `src/data/client.json` → `contact.recipientEmail` to the address that should receive form submissions
+2. Edit `src/data/client.json` → `contact.turnstileSiteKey` to your Turnstile **public** site key (`0x...`)
+3. The bootstrap script pre-creates the Cloudflare Pages project with `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` set as runtime environment variables — you don't have to touch these per-client
+
+### One-time prerequisites (before bootstrapping the first client)
+
+You need a Resend account and a Turnstile widget. Both are free.
+
+1. **Resend**
+   - Sign up at https://resend.com (free tier: 3,000 emails/month)
+   - Add a sending domain (recommended: `mail.bosqueworks.com` — a subdomain so it doesn't fight with your Google Workspace email)
+   - Add the SPF/DKIM/DMARC DNS records they give you to the zone in Cloudflare (auto-verifies in ~2 minutes)
+   - Create an API key, save it in your secrets file via `setup-secrets.sh`
+2. **Turnstile**
+   - In the Cloudflare dashboard → Turnstile → Add Site
+   - Hostnames should include all client domains and `*.pages.dev` for staging
+   - Mode: **Managed**
+   - Save the Site Key (public) and Secret Key (private) — both go in `setup-secrets.sh`
+
+### How it flows in production
+
+```
+Visitor fills form on client site
+        ↓
+Client-side JS POSTs FormData (with cf-turnstile-response token) to /api/contact
+        ↓
+Pages Function (functions/api/contact.ts):
+  • Validates honeypot
+  • Verifies Turnstile token via Cloudflare's siteverify endpoint
+  • Validates required fields
+  • Sends email via Resend API to contact.recipientEmail
+  • Returns JSON { ok: true } or { ok: false, error: "..." }
+        ↓
+Email lands in client's inbox, Reply-To set to the visitor's address
+```
+
+### Important: keep functions/ in sync with dist/
+
+The build script (`npm run build`) runs `astro build` then `node scripts/copy-functions.mjs` to copy `functions/` into `dist/functions/`. Wrangler's `pages deploy ./dist` looks for functions inside the deploy directory, so this copy step is required. Don't remove it.
 
 ## Structure
 

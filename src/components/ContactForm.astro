@@ -2,20 +2,29 @@
 import client from '../data/client.json';
 
 const subjectOptions = client.services.items.map(s => s.title);
+const turnstileSiteKey = (client.contact as any).turnstileSiteKey ?? '';
 ---
 
 <form
   id="contact-form"
-  action="https://api.web3forms.com/submit"
+  action="/api/contact"
   method="POST"
   class="flex flex-col gap-3"
 >
-  <!-- Web3Forms required fields -->
-  <input type="hidden" name="access_key" value={client.contact.accessKey} />
-  <input type="hidden" name="subject" value={`${client.contact.subjectPrefix} — ${client.business.name}`} />
-  <input type="hidden" name="from_name" value={client.business.name} />
+  <!-- Hidden config — read by /api/contact, not by Astro -->
+  <input type="hidden" name="recipient_email" value={client.contact.recipientEmail} />
+  <input type="hidden" name="subject_prefix" value={client.contact.subjectPrefix} />
+  <input type="hidden" name="business_name" value={client.business.name} />
   <!-- Honeypot anti-spam field; bots fill this, humans don't see it -->
-  <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+  <input
+    type="text"
+    name="website"
+    class="hidden"
+    style="display:none;position:absolute;left:-9999px"
+    tabindex="-1"
+    autocomplete="off"
+    aria-hidden="true"
+  />
 
   <input
     type="text"
@@ -61,6 +70,11 @@ const subjectOptions = client.services.items.map(s => s.title);
     class="px-4 py-3.5 rounded-lg border bg-white/5 text-white placeholder-white/40 outline-none transition focus:bg-white/10 resize-y min-h-[100px]"
     style="border-color:rgba(255,255,255,0.12);font-family:var(--font-body)"
   ></textarea>
+
+  {turnstileSiteKey && turnstileSiteKey !== 'REPLACE_WITH_TURNSTILE_SITE_KEY' && (
+    <div class="cf-turnstile mt-1" data-sitekey={turnstileSiteKey} data-theme="dark"></div>
+  )}
+
   <button
     type="submit"
     id="contact-submit"
@@ -77,6 +91,10 @@ const subjectOptions = client.services.items.map(s => s.title);
   ></div>
 </form>
 
+{turnstileSiteKey && turnstileSiteKey !== 'REPLACE_WITH_TURNSTILE_SITE_KEY' && (
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer is:inline></script>
+)}
+
 <script define:vars={{ successMsg: client.contact.successMessage, errorMsg: client.contact.errorMessage }}>
   const form = document.getElementById('contact-form');
   const status = document.getElementById('contact-status');
@@ -92,17 +110,20 @@ const subjectOptions = client.services.items.map(s => s.title);
       status.classList.add('hidden');
 
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
+        const res = await fetch('/api/contact', {
           method: 'POST',
           body: formData,
         });
-        const json = await res.json();
-        if (res.ok && json.success) {
+        const json = await res.json().catch(() => ({}));
+        if (res.ok && json.ok) {
           status.textContent = successMsg;
           status.className = 'text-sm mt-2 px-4 py-3 rounded-lg bg-green-500/10 text-green-300 border border-green-500/30';
           form.reset();
+          if (window.turnstile && typeof window.turnstile.reset === 'function') {
+            window.turnstile.reset();
+          }
         } else {
-          status.textContent = (json && json.message) || errorMsg;
+          status.textContent = (json && json.error) || errorMsg;
           status.className = 'text-sm mt-2 px-4 py-3 rounded-lg bg-red-500/10 text-red-300 border border-red-500/30';
         }
       } catch (err) {

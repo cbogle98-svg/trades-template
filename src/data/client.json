@@ -132,9 +132,9 @@
     "subtext": "Free consultations on every project. Call us or send a message — we'll come out, listen to what you have in mind, and give you a straight answer."
   },
   "contact": {
-    "formProvider": "web3forms",
-    "accessKey": "REPLACE_WITH_REAL_WEB3FORMS_KEY",
+    "recipientEmail": "REPLACE_WITH_CLIENT_EMAIL",
     "subjectPrefix": "New website inquiry",
+    "turnstileSiteKey": "REPLACE_WITH_TURNSTILE_SITE_KEY",
     "successMessage": "Thanks! We'll get back to you within 24 hours.",
     "errorMessage": "Sorry, something went wrong. Please call us instead."
   }
