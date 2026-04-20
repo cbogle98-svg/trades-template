@@ -18,7 +18,7 @@ const phoneDigits = client.business.phone.replace(/\D/g, '');
             {client.hero.eyebrow}
           </span>
         </div>
-        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-6" style="color:#1A1A1A">
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-6" style="color:var(--brand-text)">
           {client.hero.headline}{' '}
           <span class="italic" style="color:var(--brand-primary)">{client.hero.headlineEmphasis}</span>
         </h1>
@@ -43,33 +43,36 @@ const phoneDigits = client.business.phone.replace(/\D/g, '');
         </div>
       </div>
       <div class="relative">
-        <div class="aspect-[4/3] rounded-2xl flex items-center justify-center relative border border-black/5"
+        <div class="aspect-[4/3] rounded-2xl overflow-hidden flex items-center justify-center relative border border-black/5"
           style="background:var(--brand-surface)">
-          <div class="text-center p-10">
-            <div class="text-7xl mb-4">🏗️</div>
-            <h3 class="text-2xl font-bold mb-2" style="color:#1A1A1A;font-family:var(--font-heading)">
-              Featured Project
-            </h3>
-            <p class="text-sm" style="color:var(--brand-text-light)">
-              Add a project photo here
-            </p>
-          </div>
+          {client.hero.image ? (
+            <img src={client.hero.image} alt={client.hero.imageAlt ?? `${client.business.name} project`} class="w-full h-full object-cover" loading="eager" />
+          ) : (
+            <div class="text-center p-10">
+              <div class="text-7xl mb-4">{client.hero.featuredIcon ?? '🏗️'}</div>
+              <h3 class="text-2xl font-bold mb-2" style="color:var(--brand-text);font-family:var(--font-heading)">
+                {client.hero.featuredLabel ?? client.business.shortName}
+              </h3>
+            </div>
+          )}
           <div class="absolute bottom-6 left-6 bg-white rounded-xl px-5 py-4 shadow-xl flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white text-lg"
               style="background:var(--brand-primary)">⭐</div>
             <div>
               <div class="text-xs" style="color:var(--brand-text-light)">Customer Rating</div>
-              <strong class="text-base block" style="color:#1A1A1A">5.0 Stars</strong>
+              <strong class="text-base block" style="color:var(--brand-text)">5.0 Stars</strong>
             </div>
           </div>
         </div>
-        <div class="absolute -top-3 -right-3 md:top-5 md:-right-5 rounded-xl px-5 py-4 shadow-xl"
-          style="background:var(--brand-primary-dark);color:white">
-          <div class="text-3xl font-bold leading-none" style="font-family:var(--font-heading)">
-            {client.business.yearFounded ? new Date().getFullYear() - client.business.yearFounded + '+' : '15+'}
+        {client.business.yearFounded && (
+          <div class="absolute -top-3 -right-3 md:top-5 md:-right-5 rounded-xl px-5 py-4 shadow-xl"
+            style="background:var(--brand-primary-dark);color:white">
+            <div class="text-3xl font-bold leading-none" style="font-family:var(--font-heading)">
+              {new Date().getFullYear() - client.business.yearFounded}+
+            </div>
+            <div class="text-[10px] tracking-[0.2em] uppercase mt-1 opacity-70">Years Local</div>
           </div>
-          <div class="text-[10px] tracking-[0.2em] uppercase mt-1 opacity-70">Years Local</div>
-        </div>
+        )}
       </div>
     </div>
   </div>

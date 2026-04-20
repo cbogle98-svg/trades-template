@@ -8,7 +8,7 @@ import client from '../data/client.json';
       <div class="text-xs uppercase tracking-[0.3em] font-semibold mb-3" style="color:var(--brand-primary-light)">
         {client.testimonials.eyebrow}
       </div>
-      <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color:#1A1A1A">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color:var(--brand-text)">
         {client.testimonials.headline}
       </h2>
     </div>
@@ -19,7 +19,7 @@ import client from '../data/client.json';
           <p class="text-base italic leading-relaxed mb-6" style="color:var(--brand-text)">
             "{t.quote}"
           </p>
-          <div class="text-sm font-semibold" style="color:#1A1A1A">{t.author}</div>
+          <div class="text-sm font-semibold" style="color:var(--brand-text)">{t.author}</div>
           <div class="text-xs" style="color:var(--brand-text-light)">{t.location}</div>
         </div>
       ))}

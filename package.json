@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/copy-functions.mjs",
+    "build": "node scripts/validate-client.mjs && astro build && node scripts/copy-functions.mjs && node scripts/generate-sitemap.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

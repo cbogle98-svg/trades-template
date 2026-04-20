@@ -1,4 +1,5 @@
 {
+  "tier": "business",
   "business": {
     "name": "Sample Trades Co.",
     "shortName": "Sample Trades",
@@ -132,10 +133,11 @@
     "subtext": "Free consultations on every project. Call us or send a message — we'll come out, listen to what you have in mind, and give you a straight answer."
   },
   "contact": {
-    "recipientEmail": "REPLACE_WITH_CLIENT_EMAIL",
-    "subjectPrefix": "New website inquiry",
-    "turnstileSiteKey": "REPLACE_WITH_TURNSTILE_SITE_KEY",
+    "recipientEmail": "cody@bosqueworks.com",
+    "subjectPrefix": "Template demo inquiry",
+    "turnstileSiteKey": "0x4AAAAAAC2cp_4JPTpQQX9K",
     "successMessage": "Thanks! We'll get back to you within 24 hours.",
     "errorMessage": "Sorry, something went wrong. Please call us instead."
-  }
+  },
+  "isDemo": true
 }

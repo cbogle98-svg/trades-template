@@ -13,6 +13,32 @@ const pageDesc = description ?? `${client.business.industry} serving ${client.bu
 
 const fontHeadingUrl = client.brand.fontHeading.replace(/ /g, '+');
 const fontBodyUrl = client.brand.fontBody.replace(/ /g, '+');
+
+const siteUrl = (client as any).siteUrl ?? Astro.url.origin;
+const isDemo = (client as any).isDemo === true;
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": client.business.name,
+  "description": pageDesc,
+  "url": siteUrl,
+  "telephone": client.business.phone,
+  "email": client.business.email,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": client.business.address.street,
+    "addressLocality": client.business.address.city,
+    "addressRegion": client.business.address.state,
+    "postalCode": client.business.address.zip,
+    "addressCountry": "US"
+  },
+  "areaServed": client.business.serviceArea,
+  "openingHours": [
+    `Mo-Fr ${client.business.hours.weekdays.replace(/[–—]/g, '-').replace(/\s/g, '')}`
+  ],
+  ...(client.business.yearFounded && { "foundingDate": String(client.business.yearFounded) }),
+  ...(client.business.social?.facebook && { "sameAs": [client.business.social.facebook, client.business.social.google].filter(Boolean) })
+};
 ---
 
 <!doctype html>
@@ -24,6 +50,15 @@ const fontBodyUrl = client.brand.fontBody.replace(/ /g, '+');
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDesc} />
+    {isDemo && <meta name="robots" content="noindex,nofollow" />}
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDesc} />
+    {!isDemo && <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

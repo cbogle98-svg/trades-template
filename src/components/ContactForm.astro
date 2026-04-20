@@ -30,6 +30,8 @@ const turnstileSiteKey = (client.contact as any).turnstileSiteKey ?? '';
     type="text"
     name="name"
     placeholder="Your Name"
+    aria-label="Your name"
+    autocomplete="name"
     required
     class="px-4 py-3.5 rounded-lg border bg-white/5 text-white placeholder-white/40 outline-none transition focus:bg-white/10"
     style="border-color:rgba(255,255,255,0.12);font-family:var(--font-body)"
@@ -38,6 +40,8 @@ const turnstileSiteKey = (client.contact as any).turnstileSiteKey ?? '';
     type="email"
     name="email"
     placeholder="Email Address"
+    aria-label="Email address"
+    autocomplete="email"
     required
     class="px-4 py-3.5 rounded-lg border bg-white/5 text-white placeholder-white/40 outline-none transition focus:bg-white/10"
     style="border-color:rgba(255,255,255,0.12);font-family:var(--font-body)"
@@ -46,12 +50,15 @@ const turnstileSiteKey = (client.contact as any).turnstileSiteKey ?? '';
     type="tel"
     name="phone"
     placeholder="Phone Number"
+    aria-label="Phone number"
+    autocomplete="tel"
     required
     class="px-4 py-3.5 rounded-lg border bg-white/5 text-white placeholder-white/40 outline-none transition focus:bg-white/10"
     style="border-color:rgba(255,255,255,0.12);font-family:var(--font-body)"
   />
   <select
     name="service_interest"
+    aria-label="What service do you need?"
     required
     class="px-4 py-3.5 rounded-lg border bg-white/5 text-white outline-none transition focus:bg-white/10"
     style="border-color:rgba(255,255,255,0.12);font-family:var(--font-body)"
@@ -66,6 +73,7 @@ const turnstileSiteKey = (client.contact as any).turnstileSiteKey ?? '';
     name="message"
     rows="4"
     placeholder="Tell us about your project..."
+    aria-label="Tell us about your project"
     required
     class="px-4 py-3.5 rounded-lg border bg-white/5 text-white placeholder-white/40 outline-none transition focus:bg-white/10 resize-y min-h-[100px]"
     style="border-color:rgba(255,255,255,0.12);font-family:var(--font-body)"

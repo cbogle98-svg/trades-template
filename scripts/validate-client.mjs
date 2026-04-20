@@ -1,0 +1,74 @@
+// Build-time sanity check for src/data/client.json.
+// Catches missing required fields and unreplaced placeholder strings
+// (REPLACE_WITH_*, [bracketed], TODO) before they ship to a client.
+//
+// Set SKIP_PLACEHOLDER_CHECK=1 to allow placeholders during local dev.
+
+import { readFileSync, existsSync } from 'node:fs';
+
+const CLIENT_PATH = 'src/data/client.json';
+
+if (!existsSync(CLIENT_PATH)) {
+  console.error(`✗ ${CLIENT_PATH} not found`);
+  process.exit(1);
+}
+
+const client = JSON.parse(readFileSync(CLIENT_PATH, 'utf8'));
+
+const errors = [];
+const warnings = [];
+
+function require(path, value) {
+  if (value === undefined || value === null || value === '') {
+    errors.push(`Missing required field: ${path}`);
+  }
+}
+
+require('business.name', client.business?.name);
+require('business.shortName', client.business?.shortName);
+require('business.phone', client.business?.phone);
+require('business.email', client.business?.email);
+require('business.industry', client.business?.industry);
+require('business.address.city', client.business?.address?.city);
+require('business.address.state', client.business?.address?.state);
+require('brand.primary', client.brand?.primary);
+require('brand.fontHeading', client.brand?.fontHeading);
+require('brand.fontBody', client.brand?.fontBody);
+require('hero.headline', client.hero?.headline);
+require('hero.description', client.hero?.description);
+require('contact.recipientEmail', client.contact?.recipientEmail);
+
+const PLACEHOLDER_PATTERNS = [
+  { rx: /REPLACE_WITH_/i, label: 'unreplaced REPLACE_WITH_ token' },
+  { rx: /^\[.*\]$/, label: 'unreplaced [bracketed] placeholder' },
+  { rx: /\bTODO\b/i, label: 'TODO marker' },
+  { rx: /lorem ipsum/i, label: 'lorem ipsum placeholder' }
+];
+
+function scan(value, path) {
+  if (typeof value === 'string') {
+    for (const { rx, label } of PLACEHOLDER_PATTERNS) {
+      if (rx.test(value)) warnings.push(`${path}: ${label} → "${value.slice(0, 60)}"`);
+    }
+  } else if (Array.isArray(value)) {
+    value.forEach((v, i) => scan(v, `${path}[${i}]`));
+  } else if (value && typeof value === 'object') {
+    for (const [k, v] of Object.entries(value)) scan(v, `${path}.${k}`);
+  }
+}
+
+scan(client, 'client');
+
+if (errors.length) {
+  console.error('✗ client.json validation failed:');
+  for (const e of errors) console.error(`  - ${e}`);
+  process.exit(1);
+}
+
+if (warnings.length && !process.env.SKIP_PLACEHOLDER_CHECK) {
+  console.error('✗ client.json contains unfilled placeholders (set SKIP_PLACEHOLDER_CHECK=1 to bypass):');
+  for (const w of warnings) console.error(`  - ${w}`);
+  process.exit(1);
+}
+
+console.log(`  ✓ client.json validated (${client.business.name})`);
