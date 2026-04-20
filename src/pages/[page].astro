@@ -1,0 +1,46 @@
+---
+// Pro-tier dynamic sub-page route. Builds one HTML page per entry in
+// client.pages, e.g. /services, /about, /gallery, /contact.
+//
+// Gated by tier: getStaticPaths returns [] for non-Pro tiers, so no
+// sub-page files are emitted and Cloudflare returns 404 for those URLs.
+// This means Starter and Business tier sites have ZERO multi-page surface
+// area — they remain pure single-page sites.
+
+import client from '../data/client.json';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Services from '../components/Services.astro';
+import About from '../components/About.astro';
+import Gallery from '../components/Gallery.astro';
+import Testimonials from '../components/Testimonials.astro';
+import ServiceArea from '../components/ServiceArea.astro';
+import Contact from '../components/Contact.astro';
+
+export async function getStaticPaths() {
+  const tier = (client as any).tier ?? 'business';
+  if (tier !== 'pro') return [];
+  const pages = (client as any).pages ?? [];
+  return pages.map((p: any) => ({ params: { page: p.slug }, props: { page: p } }));
+}
+
+const { page } = Astro.props;
+---
+
+<Layout
+  title={`${page.title} — ${client.business.name}`}
+  description={page.description ?? undefined}
+>
+  <Header currentPage={page.slug} />
+  {page.sections.map((sectionName: string) => {
+    if (sectionName === 'services')     return <Services />;
+    if (sectionName === 'about')        return <About />;
+    if (sectionName === 'gallery')      return <Gallery />;
+    if (sectionName === 'testimonials') return <Testimonials />;
+    if (sectionName === 'serviceArea')  return <ServiceArea />;
+    if (sectionName === 'contact')      return <Contact />;
+    return null;
+  })}
+  <Footer />
+</Layout>

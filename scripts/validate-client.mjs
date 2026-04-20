@@ -38,6 +38,27 @@ require('hero.headline', client.hero?.headline);
 require('hero.description', client.hero?.description);
 require('contact.recipientEmail', client.contact?.recipientEmail);
 
+// Pro tier requires a `pages` array describing each multi-page route.
+// Each page entry needs slug + title + sections (array of section keys).
+const VALID_SECTIONS = new Set(['services', 'about', 'gallery', 'testimonials', 'serviceArea', 'contact']);
+if (client.tier === 'pro') {
+  if (!Array.isArray(client.pages) || client.pages.length === 0) {
+    errors.push('tier=pro requires a non-empty `pages` array (each entry needs { slug, title, sections })');
+  } else {
+    client.pages.forEach((p, i) => {
+      if (!p.slug) errors.push(`pages[${i}].slug missing`);
+      if (!p.title) errors.push(`pages[${i}].title missing`);
+      if (!Array.isArray(p.sections) || p.sections.length === 0) {
+        errors.push(`pages[${i}].sections must be a non-empty array of section keys`);
+      } else {
+        p.sections.forEach((s) => {
+          if (!VALID_SECTIONS.has(s)) errors.push(`pages[${i}].sections: "${s}" is not a valid section key (valid: ${[...VALID_SECTIONS].join(', ')})`);
+        });
+      }
+    });
+  }
+}
+
 const PLACEHOLDER_PATTERNS = [
   { rx: /REPLACE_WITH_/i, label: 'unreplaced REPLACE_WITH_ token' },
   { rx: /^\[.*\]$/, label: 'unreplaced [bracketed] placeholder' },

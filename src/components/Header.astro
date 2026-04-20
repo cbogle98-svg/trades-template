@@ -1,11 +1,38 @@
 ---
 import client from '../data/client.json';
+
+interface Props {
+  // For Pro tier multi-page sites, the slug of the current page so nav
+  // can highlight it. Undefined on the home page (and on all Starter/
+  // Business single-page sites).
+  currentPage?: string;
+}
+const { currentPage } = Astro.props;
+
 const phoneDigits = client.business.phone.replace(/\D/g, '');
+const tier = ((client as any).tier ?? 'business') as 'starter' | 'business' | 'pro';
+const pages = (client as any).pages ?? [];
+
+// Pro tier with declared pages → real page links. Otherwise → existing
+// in-page anchor links (preserves Starter/Business behavior unchanged).
+const navItems: { href: string; label: string; slug?: string }[] =
+  tier === 'pro' && pages.length > 0
+    ? pages.map((p: any) => ({
+        href: `/${p.slug}`,
+        label: p.navLabel ?? p.title,
+        slug: p.slug
+      }))
+    : [
+        { href: '/#services', label: 'Services' },
+        { href: '/#about', label: 'About' },
+        { href: '/#gallery', label: 'Our Work' },
+        { href: '/#contact', label: 'Contact' }
+      ];
 ---
 
 <header class="sticky top-0 z-50 bg-[var(--brand-bg)]/95 backdrop-blur-md border-b border-black/5">
   <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="#" class="block">
+    <a href="/" class="block">
       <span class="block text-2xl font-bold leading-none" style="font-family:var(--font-heading);color:var(--brand-primary-dark)">
         {client.business.name}
       </span>
@@ -14,10 +41,15 @@ const phoneDigits = client.business.phone.replace(/\D/g, '');
       </span>
     </a>
     <nav class="hidden md:flex items-center gap-8 text-sm font-medium" style="color:var(--brand-text)">
-      <a href="#services" class="hover:opacity-70 transition">Services</a>
-      <a href="#about" class="hover:opacity-70 transition">About</a>
-      <a href="#gallery" class="hover:opacity-70 transition">Our Work</a>
-      <a href="#contact" class="hover:opacity-70 transition">Contact</a>
+      {navItems.map(item => (
+        <a
+          href={item.href}
+          class={`hover:opacity-70 transition ${item.slug && item.slug === currentPage ? 'opacity-100 font-bold' : ''}`}
+          style={item.slug && item.slug === currentPage ? `color:var(--brand-primary)` : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
     </nav>
     <a
       href={`tel:${phoneDigits}`}

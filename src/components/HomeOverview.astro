@@ -1,0 +1,90 @@
+---
+// Pro-tier home overview: renders one teaser card per defined sub-page,
+// with a "Read more →" link to the dedicated page. Replaces the inline
+// section dump that Starter/Business tiers use on the home page.
+//
+// Reads the page list from client.pages (validated by scripts/validate-client.mjs
+// to require a non-empty array when client.tier === 'pro').
+
+import client from '../data/client.json';
+
+const pages = (client as any).pages ?? [];
+
+// Each page card pulls its teaser content from the matching client.json
+// section — uses the section's eyebrow + headline + a short summary.
+function teaserFor(sectionName: string): { eyebrow?: string; headline?: string; summary?: string } {
+  if (sectionName === 'services') {
+    return {
+      eyebrow: client.services.eyebrow,
+      headline: client.services.headline,
+      summary: client.services.subhead
+    };
+  }
+  if (sectionName === 'about') {
+    return {
+      eyebrow: client.about.eyebrow,
+      headline: client.about.headline,
+      summary: client.about.body?.slice(0, 180) + (client.about.body?.length > 180 ? '…' : '')
+    };
+  }
+  if (sectionName === 'gallery') {
+    return {
+      eyebrow: client.gallery?.eyebrow,
+      headline: client.gallery?.headline,
+      summary: client.gallery?.subhead
+    };
+  }
+  if (sectionName === 'contact') {
+    return {
+      eyebrow: client.cta?.eyebrow,
+      headline: client.cta?.headline,
+      summary: client.cta?.subtext
+    };
+  }
+  return {};
+}
+
+// Build cards from the first non-contact section of each page (so each page
+// gets one card on the home overview). Skip contact pages — those have a
+// dedicated CTA at the bottom of the home page already.
+const overviewPages = pages.filter((p: any) => !p.sections?.includes('contact') || p.sections.length > 1);
+---
+
+<section id="overview" class="py-24" style="background:var(--brand-surface)">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="text-xs uppercase tracking-[0.3em] font-semibold mb-3" style="color:var(--brand-primary-light)">
+        Explore
+      </div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color:var(--brand-text)">
+        What we do, who we are, how to find us.
+      </h2>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {overviewPages.map((page: any) => {
+        const primarySection = page.sections.find((s: string) => s !== 'contact') ?? page.sections[0];
+        const teaser = teaserFor(primarySection);
+        return (
+          <a href={`/${page.slug}`} class="group block bg-white border border-black/5 rounded-2xl p-10 transition hover:-translate-y-1.5 hover:shadow-2xl">
+            {teaser.eyebrow && (
+              <div class="text-xs uppercase tracking-[0.3em] font-semibold mb-3" style="color:var(--brand-primary-light)">
+                {teaser.eyebrow}
+              </div>
+            )}
+            <h3 class="text-xl font-bold mb-2.5" style="color:var(--brand-text);font-family:var(--font-heading)">
+              {teaser.headline ?? page.title}
+            </h3>
+            {teaser.summary && (
+              <p class="text-sm leading-relaxed mb-5" style="color:var(--brand-text-light)">
+                {teaser.summary}
+              </p>
+            )}
+            <span class="inline-flex items-center gap-1 text-sm font-semibold transition group-hover:gap-2" style="color:var(--brand-primary)">
+              Read more →
+            </span>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</section>
