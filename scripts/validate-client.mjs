@@ -38,6 +38,28 @@ require('hero.headline', client.hero?.headline);
 require('hero.description', client.hero?.description);
 require('contact.recipientEmail', client.contact?.recipientEmail);
 
+// Optional structured hours for the HoursBadge component. If present, must
+// be a 7-day map with each entry either null (closed) or {open, close} in
+// HH:MM 24-hour format.
+if (client.business?.hoursStructured) {
+  const VALID_DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+  const HM_RE = /^([01]?\d|2[0-3]):[0-5]\d$/;
+  for (const day of VALID_DAYS) {
+    const entry = client.business.hoursStructured[day];
+    if (entry === undefined) {
+      warnings.push(`business.hoursStructured.${day} not set — badge will treat as closed`);
+      continue;
+    }
+    if (entry === null) continue;
+    if (typeof entry !== 'object' || !entry.open || !entry.close) {
+      errors.push(`business.hoursStructured.${day} must be null OR { open: "HH:MM", close: "HH:MM" }`);
+      continue;
+    }
+    if (!HM_RE.test(entry.open)) errors.push(`business.hoursStructured.${day}.open invalid format (expected HH:MM, got "${entry.open}")`);
+    if (!HM_RE.test(entry.close)) errors.push(`business.hoursStructured.${day}.close invalid format (expected HH:MM, got "${entry.close}")`);
+  }
+}
+
 // Pro tier requires a `pages` array describing each multi-page route.
 // Each page entry needs slug + title + sections (array of section keys).
 const VALID_SECTIONS = new Set(['services', 'about', 'gallery', 'testimonials', 'serviceArea', 'contact']);

@@ -1,5 +1,6 @@
 ---
 import client from '../data/client.json';
+import HoursBadge from './HoursBadge.astro';
 
 interface Props {
   // For Pro tier multi-page sites, the slug of the current page so nav
@@ -51,12 +52,15 @@ const navItems: { href: string; label: string; slug?: string }[] =
         </a>
       ))}
     </nav>
-    <a
-      href={`tel:${phoneDigits}`}
-      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-white font-semibold text-sm transition hover:-translate-y-0.5 hover:shadow-lg"
-      style="background:var(--brand-primary)"
-    >
-      📞 <span class="hidden sm:inline">{client.business.phone}</span><span class="sm:hidden">Call</span>
-    </a>
+    <div class="flex items-center gap-3">
+      <HoursBadge />
+      <a
+        href={`tel:${phoneDigits}`}
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-white font-semibold text-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+        style="background:var(--brand-primary)"
+      >
+        📞 <span class="hidden sm:inline">{client.business.phone}</span><span class="sm:hidden">Call</span>
+      </a>
+    </div>
   </div>
 </header>

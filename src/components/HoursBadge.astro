@@ -1,0 +1,116 @@
+---
+// "Open Now" / "Closed" badge for the header. Reads structured hours
+// from client.business.hoursStructured (optional — badge only renders
+// if the field is set), computes status against the visitor's current
+// local time, and updates on page load.
+//
+// Schema (optional, omit to disable the badge):
+//   "hoursStructured": {
+//     "monday":    { "open": "08:00", "close": "17:00" },
+//     "tuesday":   { "open": "08:00", "close": "17:00" },
+//     "wednesday": { "open": "08:00", "close": "17:00" },
+//     "thursday":  { "open": "08:00", "close": "17:00" },
+//     "friday":    { "open": "08:00", "close": "17:00" },
+//     "saturday":  null,
+//     "sunday":    null
+//   }
+//
+// Times are 24-hour HH:MM in the business's local time. `null` means
+// closed that day. Same-day hours only — split shifts and across-
+// midnight hours not supported in this version.
+
+import client from '../data/client.json';
+const hours = (client.business as any).hoursStructured;
+---
+
+{hours && (
+  <>
+    <span
+      id="hours-badge"
+      class="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide"
+      style="background:color-mix(in srgb, var(--brand-primary) 8%, transparent);color:var(--brand-text-light)"
+      data-hours={JSON.stringify(hours)}
+    >
+      <span id="hours-badge-dot" class="w-2 h-2 rounded-full" style="background:var(--brand-text-light)"></span>
+      <span id="hours-badge-text">Hours</span>
+    </span>
+
+    <script is:inline>
+      (function () {
+        var badge = document.getElementById('hours-badge');
+        if (!badge) return;
+        var dot = document.getElementById('hours-badge-dot');
+        var text = document.getElementById('hours-badge-text');
+        var hours;
+        try { hours = JSON.parse(badge.dataset.hours); } catch (e) { return; }
+
+        var DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        var DAY_LABEL = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        function parseHM(s) {
+          if (!s) return null;
+          var parts = s.split(':');
+          return parseInt(parts[0], 10) * 60 + parseInt(parts[1] || '0', 10);
+        }
+
+        function formatHM(mins) {
+          var h = Math.floor(mins / 60);
+          var m = mins % 60;
+          var period = h >= 12 ? 'pm' : 'am';
+          var h12 = h % 12 === 0 ? 12 : h % 12;
+          return h12 + (m > 0 ? ':' + (m < 10 ? '0' + m : m) : '') + period;
+        }
+
+        function setOpen(closeAt) {
+          dot.style.background = '#22c55e';
+          badge.style.color = 'var(--brand-text)';
+          text.textContent = 'Open · Closes ' + formatHM(closeAt);
+        }
+
+        function setClosedOpensLater(opensAt, dayLabel) {
+          dot.style.background = '#a8a29e';
+          badge.style.color = 'var(--brand-text-light)';
+          text.textContent = 'Closed · Opens ' + (dayLabel ? dayLabel + ' ' : '') + formatHM(opensAt);
+        }
+
+        function setClosedToday() {
+          dot.style.background = '#a8a29e';
+          badge.style.color = 'var(--brand-text-light)';
+          text.textContent = 'Closed';
+        }
+
+        var now = new Date();
+        var dayIdx = now.getDay();
+        var minsNow = now.getHours() * 60 + now.getMinutes();
+        var today = hours[DAYS[dayIdx]];
+
+        if (today && today.open && today.close) {
+          var openMin = parseHM(today.open);
+          var closeMin = parseHM(today.close);
+          if (minsNow >= openMin && minsNow < closeMin) {
+            setOpen(closeMin);
+            return;
+          }
+          if (minsNow < openMin) {
+            setClosedOpensLater(openMin, null);
+            return;
+          }
+        }
+
+        // Find the next open day within the next 7
+        for (var i = 1; i <= 7; i++) {
+          var idx = (dayIdx + i) % 7;
+          var d = hours[DAYS[idx]];
+          if (d && d.open) {
+            var label = i === 1 ? 'tomorrow' : DAY_LABEL[idx];
+            setClosedOpensLater(parseHM(d.open), label);
+            return;
+          }
+        }
+
+        // No open day found anywhere in the week
+        setClosedToday();
+      })();
+    </script>
+  </>
+)}
