@@ -48,6 +48,18 @@ const escapeHtml = (s: string) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
+// Strip CR/LF so user input can't inject extra email headers via subject / reply-to.
+const stripCrlf = (s: string) => s.replace(/[\r\n]+/g, " ").trim();
+
+// Conservative per-field length caps. Blocks unbounded payloads and makes abuse cheap.
+const LIMITS = {
+  name: 200,
+  email: 320,
+  phone: 50,
+  message: 5000,
+  businessName: 200,
+} as const;
+
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   // ── Parse the form payload ───────────────────────────────────────
   let data: ContactPayload;
@@ -103,6 +115,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return json(400, { ok: false, error: "Please enter a valid email address." });
   }
 
+  if (
+    name.length > LIMITS.name ||
+    email.length > LIMITS.email ||
+    phone.length > LIMITS.phone ||
+    message.length > LIMITS.message ||
+    businessName.length > LIMITS.businessName
+  ) {
+    return json(400, { ok: false, error: "One or more fields exceeded the maximum length." });
+  }
+
   // ── Turnstile verification ───────────────────────────────────────
   const turnstileToken = data["cf-turnstile-response"];
   if (!turnstileToken) {
@@ -145,7 +167,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     });
   }
 
-  const subjectLine = `${subjectPrefix} — ${name}`;
+  const subjectLine = stripCrlf(`${subjectPrefix} — ${name}`);
 
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

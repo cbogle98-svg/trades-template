@@ -1,0 +1,14 @@
+# Security headers applied to every path. See:
+#   https://developers.cloudflare.com/pages/configuration/headers/
+#
+# CSP is Report-Only for now so real violations show up in browser consoles
+# without breaking the page. Flip to `Content-Security-Policy` once the
+# allowlist is confirmed stable.
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=()
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; frame-src https://challenges.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'self'
